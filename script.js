@@ -209,7 +209,7 @@ function applyLang(lang) {
 }
 
 document.querySelectorAll(".lang-switch button").forEach((b) =>
-  b.addEventListener("click", () => applyLang(b.dataset.lang))
+  b.addEventListener("click", () => { applyLang(b.dataset.lang); tbTrack("language_switched", { to_lang: b.dataset.lang }); })
 );
 
 /* ---------- nav scrolled shadow ---------- */
@@ -283,7 +283,7 @@ if (demoCard) {
   const s1 = document.getElementById("demoStage1"), s2 = document.getElementById("demoStage2"), s3 = document.getElementById("demoStage3");
   const bar = document.getElementById("demoBar");
   const testItemEl = document.getElementById("demoTestItem"), guessBtn = document.getElementById("demoGuess"), resultEl = document.getElementById("demoResult");
-  let selected = null, tally = { fruit: { fruit: 0, animal: 0 }, animal: { fruit: 0, animal: 0 } }, curTest = null;
+  let selected = null, tally = { fruit: { fruit: 0, animal: 0 }, animal: { fruit: 0, animal: 0 } }, curTest = null, demoStarted = false;
 
   const setMascot = (st) => { if (mascot) mascot.dataset.state = st; };
   const armBuckets = (on) => document.querySelectorAll(".demo-bucket").forEach((b) => b.classList.toggle("armed", on));
@@ -308,6 +308,7 @@ if (demoCard) {
       const span = document.createElement("span"); span.textContent = selected.dataset.e;
       buckets[bk].appendChild(span);
       tally[bk][selected.dataset.type]++;
+      if (!demoStarted) { demoStarted = true; tbTrack("demo_started"); }
       selected.remove(); selected = null; armBuckets(false); setMascot("thinking");
       const got = tally.fruit.fruit + tally.fruit.animal + tally.animal.fruit + tally.animal.animal;
       const bothNonEmpty = (tally.fruit.fruit + tally.fruit.animal > 0) && (tally.animal.fruit + tally.animal.animal > 0);
@@ -335,6 +336,7 @@ if (demoCard) {
     resultEl.hidden = false; resultEl.className = "demo-result " + (correct ? "ok" : "no");
     resultEl.innerHTML = dict[correct ? "demo.correct" : "demo.wrong"].replace("{label}", "<b>" + label + "</b>").replace("{conf}", conf);
     setMascot(correct ? "happy" : "confused");
+    tbTrack("demo_completed", { result: correct ? "correct" : "bias" });
   });
   document.getElementById("demoReset").addEventListener("click", () => {
     tally = { fruit: { fruit: 0, animal: 0 }, animal: { fruit: 0, animal: 0 } }; selected = null;
@@ -349,6 +351,7 @@ if (demoCard) {
 const form = document.getElementById("pilotForm");
 const statusEl = document.getElementById("formStatus");
 if (form) {
+  form.addEventListener("focusin", () => tbTrack("lead_form_started"), { once: true });
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const dict = I18N[currentLang];
@@ -358,6 +361,7 @@ if (form) {
     if (!action || action.includes("FORM_ID")) {
       const fd = new FormData(form);
       const body = encodeURIComponent(`Nume: ${fd.get("name")}\nȘcoală: ${fd.get("school")}\nEmail: ${fd.get("email")}\n\n${fd.get("message") || ""}`);
+      tbTrack("pilot_requested", { method: "mailto" });
       window.location.href = `mailto:moldluca@gmail.com?subject=${encodeURIComponent("Cerere pilot TrainBot")}&body=${body}`;
       return;
     }
@@ -366,7 +370,7 @@ if (form) {
     statusEl.textContent = dict["_form.sending"];
     try {
       const res = await fetch(action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
-      if (res.ok) { form.reset(); statusEl.className = "form-status ok"; statusEl.textContent = dict["_form.ok"]; }
+      if (res.ok) { tbTrack("pilot_requested", { method: "formspree" }); form.reset(); statusEl.className = "form-status ok"; statusEl.textContent = dict["_form.ok"]; }
       else throw new Error("bad status");
     } catch {
       statusEl.className = "form-status err"; statusEl.textContent = dict["_form.err"];
@@ -374,28 +378,82 @@ if (form) {
   });
 }
 
-/* ---------- cookie consent + Google Analytics (gated) ---------- */
-const GA_ID = "G-XXXXXXXXXX"; // TODO: înlocuiește cu ID-ul real GA4 (proprietate dedicată trainbot)
-function loadGA() {
-  if (!GA_ID || GA_ID.includes("XXXX")) return; // placeholder → nu încărca
+/* ---------- Google Analytics 4 + Consent Mode v2 ---------- */
+const GA_ID = "G-QQ141H3EDJ";
+window.dataLayer = window.dataLayer || [];
+function gtag() { dataLayer.push(arguments); }
+window.gtag = gtag;
+
+// Consent Mode v2: totul „denied" până la accept explicit (GDPR, public școlar).
+// Sub „denied" gtag trimite doar ping-uri cookieless (modelare), fără a stoca cookie-uri.
+gtag("consent", "default", {
+  ad_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+  analytics_storage: "denied",
+  wait_for_update: 500,
+});
+gtag("set", "ads_data_redaction", true);
+
+// Librăria gtag se încarcă o singură dată (nu pune cookie-uri cât timp consent = denied).
+(function loadGA() {
   const s = document.createElement("script");
   s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
   document.head.appendChild(s);
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function () { dataLayer.push(arguments); };
-  gtag("js", new Date());
-  gtag("config", GA_ID, { anonymize_ip: true });
+})();
+gtag("js", new Date());
+gtag("config", GA_ID, { anonymize_ip: true });
+
+// Helper unic pentru evenimente custom — atașează automat limba curentă.
+function tbTrack(name, params) {
+  gtag("event", name, Object.assign({ language: currentLang }, params || {}));
 }
+
+// Consent banner: la accept dăm „granted" pe analytics (gtag activează cookie-urile retroactiv).
 const cookieBanner = document.getElementById("cookieBanner");
 const consent = localStorage.getItem("tb_consent");
-if (consent === "granted") loadGA();
+if (consent === "granted") gtag("consent", "update", { analytics_storage: "granted" });
 else if (consent !== "denied" && cookieBanner) cookieBanner.hidden = false;
 document.getElementById("cookieAccept")?.addEventListener("click", () => {
-  localStorage.setItem("tb_consent", "granted"); if (cookieBanner) cookieBanner.hidden = true; loadGA();
+  localStorage.setItem("tb_consent", "granted");
+  gtag("consent", "update", { analytics_storage: "granted" });
+  if (cookieBanner) cookieBanner.hidden = true;
 });
 document.getElementById("cookieReject")?.addEventListener("click", () => {
-  localStorage.setItem("tb_consent", "denied"); if (cookieBanner) cookieBanner.hidden = true;
+  localStorage.setItem("tb_consent", "denied");
+  if (cookieBanner) cookieBanner.hidden = true;
 });
+
+/* ---------- evenimente: CTA pilot, FAQ, vizualizare planuri ---------- */
+// CTA-uri care duc la formularul de pilot (nav, hero, teachers, pricing, footer).
+document.querySelectorAll('a[href="#pilot"]').forEach((a) => {
+  a.addEventListener("click", () => {
+    const loc = a.closest("footer") ? "footer" : (a.closest("[id]")?.id || "unknown");
+    const card = a.closest(".price-card");
+    const params = { cta_location: loc, cta_text: a.textContent.trim().slice(0, 40) };
+    if (card) params.plan = card.querySelector(".price-name")?.textContent.trim();
+    tbTrack("cta_clicked", params);
+  });
+});
+// FAQ: ce întrebări deschid profesorii (obiecții).
+document.querySelectorAll(".faq-item").forEach((d) => {
+  d.addEventListener("toggle", () => {
+    if (d.open) tbTrack("faq_opened", { question: d.querySelector("summary")?.textContent.trim() });
+  });
+});
+// Planuri de preț văzute (o singură dată per plan).
+const priceCards = document.querySelectorAll(".price-card");
+if (priceCards.length) {
+  const priceIo = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        tbTrack("pricing_plan_viewed", { plan: e.target.querySelector(".price-name")?.textContent.trim() });
+        priceIo.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  priceCards.forEach((c) => priceIo.observe(c));
+}
 
 /* ---------- init ---------- */
 applyLang(currentLang);
