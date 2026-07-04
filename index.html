@@ -538,8 +538,8 @@
         <h2 class="section-title" data-i18n="pilot.title">Adu TrainBot în clasa ta.</h2>
         <p class="section-lead" data-i18n="pilot.lead">Lasă-ne datele tale și revenim cu un plan de pilot pentru școala ta. Fără costuri, fără obligații.</p>
 
-        <!-- Formspree: înlocuiește FORM_ID după creare cont -->
-        <form class="pilot-form" id="pilotForm" action="https://formspree.io/f/FORM_ID" method="POST">
+        <!-- Trimite la backend-ul TrainBot (POST /api/v1/pilot-request); fallback mailto în script.js -->
+        <form class="pilot-form" id="pilotForm" method="POST">
           <div class="field">
             <label for="name" data-i18n="pilot.name">Nume</label>
             <input id="name" name="name" type="text" required autocomplete="name" />
@@ -555,6 +555,11 @@
           <div class="field">
             <label for="message" data-i18n="pilot.msg">Mesaj (opțional)</label>
             <textarea id="message" name="message" rows="3"></textarea>
+          </div>
+          <!-- honeypot anti-spam: invizibil pentru oameni, boții îl completează -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
           </div>
           <button type="submit" class="btn btn-primary btn-block" data-i18n="pilot.submit">Trimite cererea</button>
           <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>

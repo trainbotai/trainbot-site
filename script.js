@@ -351,42 +351,53 @@ if (demoCard) {
   buildPalette();
 }
 
-/* ---------- pilot form (Formspree) ---------- */
+/* ---------- pilot form (backend TrainBot + fallback mailto) ---------- */
 const CONTACT_EMAIL = "moldluca@gmail.com";
+const PILOT_ENDPOINT = "https://api.trainbot.moldluca.tech:33443/api/v1/pilot-request";
 const form = document.getElementById("pilotForm");
 const statusEl = document.getElementById("formStatus");
+
+// Fallback: mailto + mesaj vizibil. NU trimitem `pilot_requested` aici —
+// mailto nu garantează trimiterea (fără client de mail eșuează silențios).
+function pilotMailtoFallback(fd, dict) {
+  const body = encodeURIComponent(`Nume: ${fd.get("name")}\nȘcoală: ${fd.get("school")}\nEmail: ${fd.get("email")}\n\n${fd.get("message") || ""}`);
+  tbTrack("pilot_mailto_fallback");
+  statusEl.className = "form-status ok";
+  statusEl.textContent = dict["_form.mailto"] + " ";
+  const link = document.createElement("a");
+  link.href = "mailto:" + CONTACT_EMAIL;
+  link.textContent = CONTACT_EMAIL;
+  statusEl.append(link);
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Cerere pilot TrainBot")}&body=${body}`;
+}
+
 if (form) {
   form.addEventListener("focusin", () => tbTrack("lead_form_started"), { once: true });
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const dict = I18N[currentLang];
-    const action = form.getAttribute("action");
-
-    // Dacă endpoint-ul Formspree nu e configurat încă, fallback la mailto.
-    // NU trimitem `pilot_requested` aici — mailto nu garantează trimiterea
-    // (fără client de mail configurat eșuează silențios), ar fi conversii false.
-    if (!action || action.includes("FORM_ID")) {
-      const fd = new FormData(form);
-      const body = encodeURIComponent(`Nume: ${fd.get("name")}\nȘcoală: ${fd.get("school")}\nEmail: ${fd.get("email")}\n\n${fd.get("message") || ""}`);
-      tbTrack("pilot_mailto_fallback");
-      statusEl.className = "form-status ok";
-      statusEl.textContent = dict["_form.mailto"] + " ";
-      const link = document.createElement("a");
-      link.href = "mailto:" + CONTACT_EMAIL;
-      link.textContent = CONTACT_EMAIL;
-      statusEl.append(link);
-      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Cerere pilot TrainBot")}&body=${body}`;
-      return;
-    }
+    const fd = new FormData(form);
 
     statusEl.className = "form-status";
     statusEl.textContent = dict["_form.sending"];
     try {
-      const res = await fetch(action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
-      if (res.ok) { tbTrack("pilot_requested", { method: "formspree" }); form.reset(); statusEl.className = "form-status ok"; statusEl.textContent = dict["_form.ok"]; }
+      const res = await fetch(PILOT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: fd.get("name"),
+          school: fd.get("school"),
+          email: fd.get("email"),
+          message: fd.get("message") || undefined,
+          locale: currentLang,
+          website: fd.get("website") || undefined, // honeypot
+        }),
+      });
+      if (res.ok) { tbTrack("pilot_requested", { method: "api" }); form.reset(); statusEl.className = "form-status ok"; statusEl.textContent = dict["_form.ok"]; }
       else throw new Error("bad status");
     } catch {
-      statusEl.className = "form-status err"; statusEl.textContent = dict["_form.err"];
+      // API indisponibil (backend jos / CORS / rate limit) → canal garantat: email
+      pilotMailtoFallback(fd, dict);
     }
   });
 }
