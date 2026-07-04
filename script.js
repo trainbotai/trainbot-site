@@ -28,7 +28,7 @@ const I18N = {
     "about.p2": "Construim un instrument pe care l-am fi vrut noi în școală: practic, sigur și gândit pentru sala de clasă reală, cu profesorul în centru.",
     "about.m1": "🇷🇴 Făcut în România", "about.m2": "🤝 Construit de un elev și un student",
     "faq.tag": "Întrebări frecvente", "faq.title": "Ce vor să știe profesorii.",
-    "faq.q1": "De ce echipament am nevoie?", "faq.a1": "Un iPad sau iPhone (iOS 17+) per grup de elevi și un calculator/tabletă pentru tabloul de bord al profesorului. Funcționează și cu un singur iPad partajat în clasă.",
+    "faq.q1": "De ce echipament am nevoie?", "faq.a1": "O tabletă sau un telefon per grup de elevi — iPhone/iPad (iOS 17+) sau Android — și un calculator pentru tabloul de bord al profesorului. Funcționează și cu un singur dispozitiv partajat în clasă.",
     "faq.q2": "Cât durează să încep?", "faq.a2": "Sub 15 minute. Creezi o clasă, generezi conturile elevilor și dai prima temă. Te ajutăm la onboarding în pilot.",
     "faq.q3": "Cum sunt protejate datele copiilor?", "faq.a3": "Conturile elevilor sunt username + parolă create de tine, fără email sau date personale. Antrenarea modelelor se face pe device. Suntem gândiți GDPR-first, cu DPA per școală.",
     "faq.q4": "Trebuie ca elevii să știe să programeze?", "faq.a4": "Nu. Totul e vizual și practic — antrenezi modele cu exemple, fără cod. Potrivit de la 7 ani.",
@@ -47,7 +47,7 @@ const I18N = {
     "problem.c2t": "Fără instrumente sigure", "problem.c2p": "Uneltele AI pentru adulți cer cont, date personale și acces nelimitat la internet. Nepotrivit pentru clasă.",
     "problem.c3t": "Profesorul nu vede progresul", "problem.c3p": "Fără tablou de bord, nu știi cine a înțeles, cine s-a blocat și ce model a construit fiecare elev.",
     "how.tag": "Cum funcționează", "how.title": "Trei pași. Un model antrenat de copil.",
-    "how.s1t": "Copilul antrenează", "how.s1p": "Pe iPad, elevul colectează exemple (poze sau text) și antrenează un model real, on-device, cu CoreML. Vede cum modelul „învață” în timp real.",
+    "how.s1t": "Copilul antrenează", "how.s1p": "Pe tabletă sau telefon (iOS ori Android), elevul colectează exemple (poze sau text) și antrenează un model real, direct pe dispozitiv. Vede cum modelul „învață” în timp real.",
     "how.s2t": "Copilul testează", "how.s2p": "Apoi îl pune la încercare cu exemple noi. „A ghicit corect?” Butonul de feedback îl învață că un model bun cere date bune.",
     "how.s3t": "Profesorul vede tot", "how.s3p": "În tabloul de bord, vezi clasele, temele și progresul fiecărui elev — ce model a construit, cât de bine performează, unde s-a blocat.",
     "demo.tag": "Încearcă tu", "demo.title": "Antrenează un mini-model. Chiar acum.",
@@ -77,7 +77,7 @@ const I18N = {
     "safety.c1t": "Zero date personale de la copii", "safety.c1p": "Conturile elevilor sunt username + parolă create de profesor. Fără email, fără nume real obligatoriu.",
     "safety.c2t": "Moderare AI dublă", "safety.c2p": "Filtrare pe cuvinte-cheie plus moderare AI, pe ce intră ȘI pe ce iese. La dubiu, mesajul e blocat.",
     "safety.c3t": "GDPR-K & DPA per școală", "safety.c3p": "Școala rămâne operatorul de date, în context educațional. Documentație de conformitate inclusă.",
-    "safety.c4t": "Pe device, în control", "safety.c4p": "Antrenarea modelelor se întâmplă pe iPad. Datele de antrenare nu pleacă de pe dispozitiv.",
+    "safety.c4t": "Pe device, în control", "safety.c4p": "Antrenarea modelelor se întâmplă direct pe tableta sau telefonul copilului. Datele de antrenare nu pleacă de pe dispozitiv.",
     "pricing.tag": "Prețuri", "pricing.title": "Primul an e pe noi.",
     "pricing.lead": "Începe cu un an pilot gratuit pentru o clasă. Apoi alegi planul potrivit școlii tale — prețuri fixe, fără surprize.",
     "pricing.badge": "Recomandat",
@@ -92,8 +92,8 @@ const I18N = {
     "pilot.lead": "Lasă-ne datele tale și revenim cu un plan de pilot pentru școala ta. Fără costuri, fără obligații.",
     "pilot.name": "Nume", "pilot.school": "Școală / organizație", "pilot.email": "Email", "pilot.msg": "Mesaj (opțional)", "pilot.submit": "Trimite cererea",
     "footer.tag": "AI hands-on pentru școli. Un proiect din ecosistemul moldluca.", "footer.status": "Platformă în dezvoltare · 2026",
-    "cookie.text": "Folosim cookie-uri doar pentru a înțelege traficul pe site (Google Analytics). Niciun cookie de marketing.", "cookie.accept": "Accept", "cookie.reject": "Refuz",
-    "footer.privacy": "Confidențialitate", "footer.terms": "Termeni", "footer.dpa": "DPA",
+    "cookie.text": "Folosim cookie-uri doar pentru a înțelege traficul pe site (Google Analytics). Niciun cookie de marketing. Detalii în <a href=\"privacy.html\">politica de confidențialitate</a>.", "cookie.accept": "Accept", "cookie.reject": "Refuz",
+    "footer.privacy": "Confidențialitate", "footer.terms": "Termeni", "footer.dpa": "DPA", "footer.cookies": "Setări cookie",
     "_form.sending": "Se trimite…", "_form.ok": "Mulțumim! Revenim curând. 🎉", "_form.err": "Ceva n-a mers. Scrie-ne direct pe email.",
     "_form.mailto": "Ți-am deschis aplicația de email cu cererea gata completată — apasă Send acolo. Dacă nu s-a deschis nimic, scrie-ne direct la",
     "pilot.direct": "Sau scrie-ne direct:",
@@ -122,7 +122,7 @@ const I18N = {
     "about.p2": "We're building the tool we wish we'd had in school: hands-on, safe and designed for the real classroom, with the teacher at the center.",
     "about.m1": "🇷🇴 Made in Romania", "about.m2": "🤝 Built by a pupil and a student",
     "faq.tag": "Frequently asked", "faq.title": "What teachers want to know.",
-    "faq.q1": "What equipment do I need?", "faq.a1": "An iPad or iPhone (iOS 17+) per student group, and a computer/tablet for the teacher dashboard. It works even with a single iPad shared in class.",
+    "faq.q1": "What equipment do I need?", "faq.a1": "A tablet or phone per student group — iPhone/iPad (iOS 17+) or Android — and a computer for the teacher dashboard. It works even with a single device shared in class.",
     "faq.q2": "How long to get started?", "faq.a2": "Under 15 minutes. Create a class, generate student accounts and set the first assignment. We help with onboarding during the pilot.",
     "faq.q3": "How is children's data protected?", "faq.a3": "Student accounts are username + password created by you, with no email or personal data. Model training happens on the device. We're GDPR-first, with a per-school DPA.",
     "faq.q4": "Do students need to know how to code?", "faq.a4": "No. Everything is visual and hands-on — you train models with examples, no code. Suitable from age 7.",
@@ -141,7 +141,7 @@ const I18N = {
     "problem.c2t": "No safe tools", "problem.c2p": "AI tools built for adults require accounts, personal data and open internet access. Wrong fit for a classroom.",
     "problem.c3t": "Teachers can't see progress", "problem.c3p": "Without a dashboard, you don't know who understood, who got stuck, and what model each student built.",
     "how.tag": "How it works", "how.title": "Three steps. A model trained by the child.",
-    "how.s1t": "The child trains", "how.s1p": "On the iPad, the student collects examples (photos or text) and trains a real, on-device model with CoreML. They watch the model \"learn\" in real time.",
+    "how.s1t": "The child trains", "how.s1p": "On a tablet or phone (iOS or Android), the student collects examples (photos or text) and trains a real model directly on the device. They watch the model \"learn\" in real time.",
     "how.s2t": "The child tests", "how.s2p": "Then they put it to the test with new examples. \"Did it guess right?\" The feedback button teaches that a good model needs good data.",
     "how.s3t": "The teacher sees all", "how.s3p": "In the dashboard you see classes, assignments and each student's progress — what model they built, how well it performs, where they got stuck.",
     "demo.tag": "Try it yourself", "demo.title": "Train a mini-model. Right now.",
@@ -171,7 +171,7 @@ const I18N = {
     "safety.c1t": "Zero personal data from kids", "safety.c1p": "Student accounts are username + password created by the teacher. No email, no required real name.",
     "safety.c2t": "Double AI moderation", "safety.c2p": "Keyword filtering plus AI moderation, on both input AND output. When in doubt, the message is blocked.",
     "safety.c3t": "GDPR-K & per-school DPA", "safety.c3p": "The school remains the data controller, in an educational context. Compliance documentation included.",
-    "safety.c4t": "On-device, in control", "safety.c4p": "Model training happens on the iPad. Training data never leaves the device.",
+    "safety.c4t": "On-device, in control", "safety.c4p": "Model training happens right on the child's tablet or phone. Training data never leaves the device.",
     "pricing.tag": "Pricing", "pricing.title": "The first year is on us.",
     "pricing.lead": "Start with a free one-year pilot for a class. Then pick the plan that fits your school — fixed prices, no surprises.",
     "pricing.badge": "Recommended",
@@ -186,8 +186,8 @@ const I18N = {
     "pilot.lead": "Leave us your details and we'll come back with a pilot plan for your school. No cost, no obligation.",
     "pilot.name": "Name", "pilot.school": "School / organization", "pilot.email": "Email", "pilot.msg": "Message (optional)", "pilot.submit": "Send request",
     "footer.tag": "Hands-on AI for schools. A project from the moldluca ecosystem.", "footer.status": "Platform in development · 2026",
-    "cookie.text": "We use cookies only to understand site traffic (Google Analytics). No marketing cookies.", "cookie.accept": "Accept", "cookie.reject": "Decline",
-    "footer.privacy": "Privacy", "footer.terms": "Terms", "footer.dpa": "DPA",
+    "cookie.text": "We use cookies only to understand site traffic (Google Analytics). No marketing cookies. Details in our <a href=\"privacy.html\">privacy policy</a>.", "cookie.accept": "Accept", "cookie.reject": "Decline",
+    "footer.privacy": "Privacy", "footer.terms": "Terms", "footer.dpa": "DPA", "footer.cookies": "Cookie settings",
     "_form.sending": "Sending…", "_form.ok": "Thanks! We'll be in touch soon. 🎉", "_form.err": "Something went wrong. Email us directly.",
     "_form.mailto": "We opened your email app with the request pre-filled — hit Send there. If nothing opened, email us directly at",
     "pilot.direct": "Or write to us directly:",
@@ -445,7 +445,14 @@ document.getElementById("cookieAccept")?.addEventListener("click", () => {
 });
 document.getElementById("cookieReject")?.addEventListener("click", () => {
   localStorage.setItem("tb_consent", "denied");
+  gtag("consent", "update", { analytics_storage: "denied" });
   if (cookieBanner) cookieBanner.hidden = true;
+});
+// Retragerea consimțământului trebuie să fie la fel de ușoară ca acordarea (GDPR):
+// linkul "Setări cookie" din footer re-arată bannerul oricând.
+document.getElementById("cookieSettings")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (cookieBanner) cookieBanner.hidden = false;
 });
 
 /* ---------- evenimente: CTA pilot, FAQ, vizualizare planuri ---------- */
