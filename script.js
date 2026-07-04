@@ -95,6 +95,8 @@ const I18N = {
     "cookie.text": "Folosim cookie-uri doar pentru a înțelege traficul pe site (Google Analytics). Niciun cookie de marketing.", "cookie.accept": "Accept", "cookie.reject": "Refuz",
     "footer.privacy": "Confidențialitate", "footer.terms": "Termeni", "footer.dpa": "DPA",
     "_form.sending": "Se trimite…", "_form.ok": "Mulțumim! Revenim curând. 🎉", "_form.err": "Ceva n-a mers. Scrie-ne direct pe email.",
+    "_form.mailto": "Ți-am deschis aplicația de email cu cererea gata completată — apasă Send acolo. Dacă nu s-a deschis nimic, scrie-ne direct la",
+    "pilot.direct": "Sau scrie-ne direct:",
   },
   en: {
     "nav.how": "How it works", "nav.learn": "What kids learn", "nav.teachers": "For teachers", "nav.pricing": "Pricing", "nav.faq": "FAQ", "nav.safety": "Safety", "nav.cta": "Request a pilot",
@@ -187,6 +189,8 @@ const I18N = {
     "cookie.text": "We use cookies only to understand site traffic (Google Analytics). No marketing cookies.", "cookie.accept": "Accept", "cookie.reject": "Decline",
     "footer.privacy": "Privacy", "footer.terms": "Terms", "footer.dpa": "DPA",
     "_form.sending": "Sending…", "_form.ok": "Thanks! We'll be in touch soon. 🎉", "_form.err": "Something went wrong. Email us directly.",
+    "_form.mailto": "We opened your email app with the request pre-filled — hit Send there. If nothing opened, email us directly at",
+    "pilot.direct": "Or write to us directly:",
   },
 };
 
@@ -348,6 +352,7 @@ if (demoCard) {
 }
 
 /* ---------- pilot form (Formspree) ---------- */
+const CONTACT_EMAIL = "moldluca@gmail.com";
 const form = document.getElementById("pilotForm");
 const statusEl = document.getElementById("formStatus");
 if (form) {
@@ -358,11 +363,19 @@ if (form) {
     const action = form.getAttribute("action");
 
     // Dacă endpoint-ul Formspree nu e configurat încă, fallback la mailto.
+    // NU trimitem `pilot_requested` aici — mailto nu garantează trimiterea
+    // (fără client de mail configurat eșuează silențios), ar fi conversii false.
     if (!action || action.includes("FORM_ID")) {
       const fd = new FormData(form);
       const body = encodeURIComponent(`Nume: ${fd.get("name")}\nȘcoală: ${fd.get("school")}\nEmail: ${fd.get("email")}\n\n${fd.get("message") || ""}`);
-      tbTrack("pilot_requested", { method: "mailto" });
-      window.location.href = `mailto:moldluca@gmail.com?subject=${encodeURIComponent("Cerere pilot TrainBot")}&body=${body}`;
+      tbTrack("pilot_mailto_fallback");
+      statusEl.className = "form-status ok";
+      statusEl.textContent = dict["_form.mailto"] + " ";
+      const link = document.createElement("a");
+      link.href = "mailto:" + CONTACT_EMAIL;
+      link.textContent = CONTACT_EMAIL;
+      statusEl.append(link);
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Cerere pilot TrainBot")}&body=${body}`;
       return;
     }
 

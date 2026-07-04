@@ -384,6 +384,9 @@ ul { list-style: none; }
 .form-status { text-align: center; font-weight: 600; font-size: .95rem; min-height: 1.2em; }
 .form-status.ok { color: #2faf7a; }
 .form-status.err { color: #d6536a; }
+.form-status a { color: inherit; text-decoration: underline; }
+.pilot-direct { text-align: center; margin-top: 14px; font-size: .95rem; color: var(--muted, #6b6880); }
+.pilot-direct a { color: var(--purple); font-weight: 600; }
 
 /* ---------- FOOTER ---------- */
 .footer { background: var(--ink); color: rgba(255,255,255,.7); padding: 56px 0 40px; margin-top: 40px; position: relative; z-index: 2; }
