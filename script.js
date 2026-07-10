@@ -351,6 +351,19 @@ if (demoCard) {
   buildPalette();
 }
 
+/* ---------- meniu mobil (hamburger) ---------- */
+const navEl = document.getElementById("nav");
+const navToggle = document.getElementById("navToggle");
+const navLinks = document.getElementById("navLinks");
+if (navEl && navToggle && navLinks) {
+  const setOpen = (open) => {
+    navEl.classList.toggle("nav-open", open);
+    navToggle.setAttribute("aria-expanded", String(open));
+  };
+  navToggle.addEventListener("click", () => setOpen(!navEl.classList.contains("nav-open")));
+  navLinks.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+}
+
 /* ---------- pilot form (backend TrainBot + fallback mailto) ---------- */
 const CONTACT_EMAIL = "moldluca@gmail.com";
 const PILOT_ENDPOINT = "https://api.trainbot.moldluca.tech:33443/api/v1/pilot-request";

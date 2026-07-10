@@ -512,9 +512,26 @@ ul { list-style: none; }
 .reveal.in { opacity: 1; transform: none; }
 .reveal.d1 { transition-delay: .08s; } .reveal.d2 { transition-delay: .16s; } .reveal.d3 { transition-delay: .24s; }
 
+/* Hamburger — ascuns pe desktop, apare pe mobil */
+.nav-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: 0; cursor: pointer; padding: 8px; }
+.nav-toggle span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform .25s, opacity .2s; }
+.nav.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+.nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 900px) {
-  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  /* meniul devine dropdown deschis de hamburger; CTA rămâne mereu vizibil */
+  .nav-links {
+    position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 0; margin: 0;
+    background: #fff; border-bottom: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    max-height: 0; overflow: hidden; transition: max-height .3s ease;
+  }
+  .nav.nav-open .nav-links { max-height: 320px; }
+  .nav-links a { padding: 14px 24px; border-top: 1px solid var(--line); }
   .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 40px; }
   .hero-copy { order: 2; }
   .hero-mascot { order: 1; }
@@ -536,7 +553,8 @@ ul { list-style: none; }
   .hero { padding-top: 120px; }
   .hero-title { font-size: 1.9rem; letter-spacing: -.02em; overflow-wrap: break-word; }
   .mascot-xl { --m: 150px; }
-  .nav-actions .btn { display: none; }
+  /* CTA-ul „Cere un pilot" rămâne vizibil pe telefon; ascundem doar lang-switch dacă e prea îngust */
+  .nav .lang-switch { display: none; }
   .safety-grid { grid-template-columns: 1fr; }
   .learn-grid { grid-template-columns: 1fr; }
   .footer-inner { flex-direction: column; text-align: center; align-items: center; }

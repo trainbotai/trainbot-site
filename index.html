@@ -33,6 +33,21 @@
   }
   </script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "De ce echipament am nevoie?", "acceptedAnswer": { "@type": "Answer", "text": "O tabletă sau un telefon per grup de elevi — iPhone/iPad (iOS 17+) sau Android — și un calculator pentru tabloul de bord al profesorului. Funcționează și cu un singur dispozitiv partajat în clasă." } },
+      { "@type": "Question", "name": "Cât durează să încep?", "acceptedAnswer": { "@type": "Answer", "text": "Sub 15 minute. Creezi o clasă, generezi conturile elevilor și dai prima temă. Te ajutăm la onboarding în pilot." } },
+      { "@type": "Question", "name": "Cum sunt protejate datele copiilor?", "acceptedAnswer": { "@type": "Answer", "text": "Conturile elevilor sunt username + parolă create de tine, fără email sau date personale. Antrenarea modelelor se face pe device. Suntem gândiți GDPR-first, cu DPA per școală." } },
+      { "@type": "Question", "name": "Trebuie ca elevii să știe să programeze?", "acceptedAnswer": { "@type": "Answer", "text": "Nu. Totul e vizual și practic — antrenezi modele cu exemple, fără cod. Potrivit de la 7 ani." } },
+      { "@type": "Question", "name": "Modulul AI conversațional e sigur?", "acceptedAnswer": { "@type": "Answer", "text": "Da. Fiecare mesaj trece prin filtrare pe cuvinte-cheie plus moderare AI, pe ce intră și ce iese. La dubiu, mesajul e blocat. Profesorul vede sesiunile." } },
+      { "@type": "Question", "name": "Cât costă după anul pilot?", "acceptedAnswer": { "@type": "Answer", "text": "Prețuri fixe: 590 lei/clasă/an sau 2.490 lei/an pentru toată școala. Reduceri pentru ONG-uri și școli din mediul rural." } }
+    ]
+  }
+  </script>
+
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%237B6CF0'/><stop offset='1' stop-color='%236B86F0'/></linearGradient></defs><rect width='100' height='100' rx='26' fill='url(%23g)'/><rect x='34' y='38' width='10' height='24' rx='5' fill='white'/><rect x='56' y='38' width='10' height='24' rx='5' fill='white'/></svg>" />
   <link rel="apple-touch-icon" href="images/icon.svg" />
   <link rel="manifest" href="manifest.json" />
@@ -59,7 +74,7 @@
       </span><span class="logo-bot">t</span>
     </a>
 
-    <nav class="nav-links">
+    <nav class="nav-links" id="navLinks">
       <a href="#how" data-i18n="nav.how">Cum funcționează</a>
       <a href="#learn" data-i18n="nav.learn">Ce învață</a>
       <a href="#teachers" data-i18n="nav.teachers">Pentru profesori</a>
@@ -73,6 +88,9 @@
         <button data-lang="en" aria-pressed="false">EN</button>
       </div>
       <a href="#pilot" class="btn btn-primary btn-sm" data-i18n="nav.cta">Cere un pilot</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Meniu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -283,7 +301,7 @@
   <section class="section kids" id="kids">
     <div class="container split reverse">
       <div class="split-visual">
-        <img src="images/app/hand-home.jpg" alt="Copil ținând în mână un iPhone cu aplicația TrainBot" class="app-photo" loading="lazy" />
+        <img src="images/app/hand-home.webp" width="704" height="1120" alt="Copil ținând în mână un iPhone cu aplicația TrainBot" class="app-photo" loading="lazy" />
         <span class="visual-note" data-i18n="kids.note">Aplicația reală, pe iPhone</span>
       </div>
 
@@ -314,7 +332,7 @@
 
         <div class="car-stage">
           <article class="car-slide is-active">
-            <div class="car-visual"><img src="images/app/ios-home.png" alt="Ecranul principal TrainBot" loading="lazy" /></div>
+            <div class="car-visual"><img src="images/app/ios-home.webp" width="600" height="1118" alt="Ecranul principal TrainBot" loading="lazy" /></div>
             <div class="car-text">
               <span class="car-step">01 / 05</span>
               <h3 data-i18n="car.t1">Acasă</h3>
@@ -322,7 +340,7 @@
             </div>
           </article>
           <article class="car-slide">
-            <div class="car-visual"><img src="images/app/ios-training.png" alt="Antrenare model AI" loading="lazy" /></div>
+            <div class="car-visual"><img src="images/app/ios-training.webp" width="600" height="1118" alt="Antrenare model AI" loading="lazy" /></div>
             <div class="car-text">
               <span class="car-step">02 / 05</span>
               <h3 data-i18n="car.t2">Antrenare AI</h3>
@@ -330,7 +348,7 @@
             </div>
           </article>
           <article class="car-slide">
-            <div class="car-visual"><img src="images/app/ios-botlist.png" alt="Boții AI ai copilului" loading="lazy" /></div>
+            <div class="car-visual"><img src="images/app/ios-botlist.webp" width="600" height="1118" alt="Boții AI ai copilului" loading="lazy" /></div>
             <div class="car-text">
               <span class="car-step">03 / 05</span>
               <h3 data-i18n="car.t3">Boții tăi AI</h3>
@@ -338,7 +356,7 @@
             </div>
           </article>
           <article class="car-slide">
-            <div class="car-visual"><img src="images/app/ios-achievements.png" alt="Realizări și insigne" loading="lazy" /></div>
+            <div class="car-visual"><img src="images/app/ios-achievements.webp" width="600" height="1118" alt="Realizări și insigne" loading="lazy" /></div>
             <div class="car-text">
               <span class="car-step">04 / 05</span>
               <h3 data-i18n="car.t4">Realizări</h3>
@@ -346,7 +364,7 @@
             </div>
           </article>
           <article class="car-slide">
-            <div class="car-visual"><img src="images/app/ios-daily.png" alt="Provocarea zilei" loading="lazy" /></div>
+            <div class="car-visual"><img src="images/app/ios-daily.webp" width="600" height="1118" alt="Provocarea zilei" loading="lazy" /></div>
             <div class="car-text">
               <span class="car-step">05 / 05</span>
               <h3 data-i18n="car.t5">Provocarea zilei</h3>
